@@ -1,0 +1,47 @@
+Sub SortSheets()
+'   This routine sorts the sheets of the active workbook
+'   in ascending order.
+Dim SheetNames() As String
+Dim SheetCount As Integer
+Dim isort As Integer
+Dim VisibleWins As Integer
+Dim Item As Object
+Dim OldActive As Object
+
+On Error GoTo ErrHandler
+Application.Interactive = False
+Application.ScreenUpdating = False
+Application.StatusBar = "Please Wait..."
+
+' Store a Reference to The Active Sheet
+Set OldActive = ActiveSheet
+'   Get the number of sheets
+    SheetCount = ActiveWorkbook.Sheets.count
+'   Redimension the array
+    ReDim SheetNames(1 To SheetCount)
+'   Fill Array With Sheet Names and hidden Status
+    For isort = 1 To SheetCount
+        SheetNames(isort) = ActiveWorkbook.Sheets(isort).name
+    Next isort
+'   Sort the array in ascending order
+    Call BubbleSort(SheetNames)
+'   Move the sheets
+    For isort = 1 To SheetCount
+        ActiveWorkbook.Sheets(SheetNames(isort)).Move ActiveWorkbook.Sheets(isort)
+    Next isort
+
+Exit_Sub:
+Application.Interactive = True
+Application.ScreenUpdating = True
+Application.StatusBar = False
+'Reactivate the original active sheet
+OldActive.Activate
+Exit Sub
+
+ErrHandler:
+MsgBox Err.Number & ":" & Err.Description, vbOKOnly + vbCritical, "Error!"
+Resume Exit_Sub
+
+End Sub
+
+
