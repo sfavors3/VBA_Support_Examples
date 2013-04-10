@@ -1,0 +1,12 @@
+Function REVERSETEXT(text) As String
+'
+' Returns its argument, reversed
+' J. Walkenbach
+'
+Dim TextLen As Integer
+Dim i As Integer
+TextLen = Len(text)
+For i = TextLen To 1 Step -1
+REVERSETEXT = REVERSETEXT & Mid(text, i, 1)
+Next i
+End Function
