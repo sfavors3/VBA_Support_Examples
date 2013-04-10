@@ -1,3 +1,1 @@
-This repository contains example Excel VBA code as either modules or class modules.
-The code here mostly relates to examples used to compare and contrast Excel VBA and Google App JavaScript.
-See blog "http://www.javascript-spreadsheet-programming.com/"
+This repository contains example Excel VBA code as either modules or class modules.  The purpose of this repository is to house all of the code pertinent to supporting someone in Excel VBA so that the wheel does not have to be reinvented each time a problem is presented.
