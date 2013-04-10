@@ -1,0 +1,20 @@
+Sub BubbleSort(List() As String)
+'   Sorts the List array in ascending order
+    Dim First As Integer, Last As Integer
+    Dim i As Integer, j As Integer
+    Dim temp
+    
+    First = LBound(List)
+    Last = UBound(List)
+    For i = First To Last - 1
+        For j = i + 1 To Last
+            If UCase(List(i)) > UCase(List(j)) Then
+                temp = List(j)
+                List(j) = List(i)
+                List(i) = temp
+            End If
+        Next j
+    Next i
+    
+                
+End Sub
