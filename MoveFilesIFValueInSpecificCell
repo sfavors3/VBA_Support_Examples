@@ -1,0 +1,57 @@
+Sub MoveData()
+Dim j As Integer
+Dim i As Long
+Dim endrow As Long
+Dim iStartCol As Integer
+Dim iEndCol As Integer
+Dim rng As Range
+Dim strSheetName As String
+Dim num As Integer
+
+endrow = ActiveSheet.Range("A" & Rows.count).End(xlUp).row
+num = 0
+Select Case Range("C4").Value
+    Case 1
+        iStartCol = 6
+        iEndCol = 10
+    Case 2
+        iStartCol = 11
+        iEndCol = 15
+    Case 3
+        iStartCol = 12
+        iEndCol = 16
+    Case 4
+        iStartCol = 17
+        iEndCol = 21
+        
+End Select
+For i = 7 To endrow
+    For j = iStartCol To iEndCol
+        If Cells(i, j).Value = "X" Then
+            
+            Select Case j
+                Case 6, 11, 16, 21
+                    strSheetName = "Monday Calls"
+                 Case 7, 12, 17, 22
+                    strSheetName = "Tuesday Calls"
+                Case 8, 13, 18, 23
+                    strSheetName = "Wednesday Calls"
+                Case 9, 14, 19, 24
+                    strSheetName = "Thursday Calls"
+                Case 10, 15, 20, 25
+                    strSheetName = "Friday Calls"
+                    
+            End Select
+                Debug.Print strSheetName
+            num = num + 1
+            Range("A" & i & ":E" & i).Copy _
+                Destination:=Sheets(strSheetName).Range("A" & Sheets(strSheetName).Range("A" & Sheets(strSheetName).Rows.count).End(xlUp).row + 1)
+            
+        End If
+    Next j
+Next i
+
+End Sub
+
+
+
