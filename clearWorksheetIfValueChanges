@@ -1,0 +1,21 @@
+Private Sub Worksheet_Change(ByVal Target As Range)
+Const c_sSheets As String = "Monday Calls;Tuesday Calls;Wednesday Calls;Thursday Calls;Friday Calls"
+    
+    Dim lIndex As Long
+    Dim vSheets As Variant
+    
+    vSheets = Split(c_sSheets, ";")
+
+    If Target.row = 4 And Target.Column = 3 Then
+    
+        For lIndex = LBound(vSheets) To UBound(vSheets)
+        
+            ' clear sheet
+            ActiveWorkbook.Worksheets(vSheets(lIndex)).Range("A8:F" & ActiveSheet.Rows.count).Clear
+        
+        Next lIndex
+    
+    End If
+
+    
+End Sub
