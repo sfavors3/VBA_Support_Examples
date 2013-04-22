@@ -1,0 +1,28 @@
+Sub MyToolBar()
+Dim myBar As CommandBar
+Dim myBarButton As CommandBarButton
+
+Set myBar = Application.CommandBars.Add(name:="SherryToolbar", Position:=msoBarFloating)
+myBar.Visible = True
+
+Set myBarButton = myBar.Controls.Add(Type:=msoControlButton, ID:=23)
+
+With myBarButton
+    .Visible = True
+    .Style = msoButtonCaption
+    .Caption = "Sherry Custom Button"
+    .FaceId = 23
+End With
+Set myBarButton = myBar.Controls.Add(ID:=3917)
+With myBarButton
+    .Visible = True
+    .FaceId = 3917
+    .Caption = "Sherry's Center"
+    .OnAction = "MyMacro"
+End With
+For Each cbar In Application.CommandBars
+    If cbar.name = "SherryToolbar" Then
+        cbar.Delete
+    End If
+Next
+End Sub
