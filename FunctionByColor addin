@@ -1,0 +1,159 @@
+'This is the launcher for the addin, there are two forms with the addin, frmMain and frmChooser. 
+'frmchooser provides a color palette for the addin.
+Sub launchFunctions()
+frmMain.Show 
+End Sub
+'these are the functions for the addin
+
+Function CountByBackColor(rng As Range, varColor As Variant) As Double
+
+Application.Volatile
+
+Dim theCell As Range
+Dim intColor As Double
+Dim intRes As Double
+
+If TypeName(varColor) = "Range" Then
+Dim ref As Range
+Set ref = varColor
+intColor = ref.Interior.Color
+Else
+intColor = varColor
+End If
+
+intRes = 0
+
+For Each theCell In rng
+If theCell.Interior.Color = intColor Then
+intRes = intRes + 1
+End If
+Next
+
+CountByBackColor = intRes
+
+End Function
+
+Function SumByBackColor(rng As Range, varColor As Variant) As Double
+
+Application.Volatile
+
+Dim theCell As Range
+Dim intColor As Double
+Dim intRes As Double
+
+intRes = 0
+
+If TypeName(varColor) = "Range" Then
+Dim ref As Range
+Set ref = varColor
+intColor = ref.Interior.Color
+Else
+intColor = varColor
+End If
+
+For Each theCell In rng
+If theCell.Interior.Color = intColor Then
+intRes = intRes + theCell.Value
+End If
+Next
+
+SumByBackColor = intRes
+
+End Function
+
+Function CountByFontColor(rng As Range, varColor As Variant) As Double
+
+Application.Volatile
+
+Dim theCell As Range
+Dim intRes As Double
+Dim intColor As Double
+
+intRes = 0
+
+If TypeName(varColor) = "Range" Then
+Dim ref As Range
+Set ref = varColor
+intColor = ref.Font.Color
+Else
+intColor = varColor
+End If
+
+For Each theCell In rng
+If theCell.Font.Color = intColor Then
+intRes = intRes + 1
+End If
+Next
+
+CountByFontColor = intRes
+
+End Function
+
+Function SumByFontColor(rng As Range, varColor As Variant) As Double
+
+Application.Volatile
+
+Dim theCell As Range
+Dim intRes As Double
+Dim intColor As Double
+
+intRes = 0
+
+If TypeName(varColor) = "Range" Then
+Dim ref As Range
+Set ref = varColor
+intColor = ref.Font.Color
+Else
+intColor = varColor
+End If
+
+
+For Each theCell In rng
+If theCell.Font.Color = intColor Then
+intRes = intRes + theCell.Value
+End If
+Next
+
+SumByFontColor = intRes
+
+End Function
+
+Function AverageByBackColor(rng As Range, varColor As Variant) As Double
+
+Dim dblRes As Double
+dblRes = SumByBackColor(rng, varColor) / CountByBackColor(rng, varColor)
+
+AverageByBackColor = dblRes
+
+End Function
+
+Function AverageByFontColor(rng As Range, varColor As Variant) As Double
+
+Dim dblRes As Double
+dblRes = SumByFontColor(rng, varColor) / CountByFontColor(rng, varColor)
+
+AverageByFontColor = dblRes
+
+End Function
+'This allows you to provide a chooser for the controls
+Sub ChooseColor(col As String)
+
+Dim ctl As Control
+
+For Each ctl In frmChooser.Controls
+If Left(ctl.Name, 5) = "Image" Then
+ If ctl.Name = col Then
+   ctl.BorderStyle = fmBorderStyleSingle
+   ctl.SpecialEffect = fmSpecialEffectEtched
+ Else
+   ctl.BorderStyle = fmBorderStyleSingle
+   ctl.SpecialEffect = fmSpecialEffectFlat
+ End If
+End If
+Next
+
+frmChooser.tmpColor = frmChooser.Controls(col).BackColor
+
+
+End Sub
+
