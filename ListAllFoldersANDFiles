@@ -1,0 +1,72 @@
+Sub CreateList()
+    Application.ScreenUpdating = False
+        ' add headers
+    With Cells(1, 1)
+        .value = "Folder contents:"
+        .Font.Bold = True
+        .Font.Size = 12
+    End With
+    Cells(3, 1).value = "Folder Path:"
+    Cells(3, 2).value = "Folder Name:"
+    Cells(3, 3).value = "Last Accessed:"
+
+    Range("A3:G3").Font.Bold = True
+    ListFolders BrowseFolder, True
+    Application.ScreenUpdating = True
+End Sub
+ 
+Sub ListFolders(SourceFolderName As String, IncludeSubfolders As Boolean)
+    Dim objFSO As Object
+    Dim objFolder As Object
+    Dim objFile As Object
+    Dim ws As Worksheet
+    Dim myRow As Long
+     ' lists information about the folders in SourceFolder
+    Dim fso    As Scripting.FileSystemObject
+    Dim SourceFolder As Scripting.Folder, SubFolder As Scripting.Folder
+    Dim r      As Long
+    Set fso = New Scripting.FileSystemObject
+    Set SourceFolder = fso.GetFolder(SourceFolderName)
+     ' display folder properties
+    r = Cells(Rows.count, 1).End(xlUp).Row + 1
+    Cells(r, 1).value = SourceFolder.path
+    Cells(r, 1).Font.Bold = True
+    Cells(r, 2).value = SourceFolder.name
+    Cells(r, 2).Font.Bold = True
+   
+    Cells(r, 3).value = SourceFolder.DateLastAccessed
+    Cells(r, 3).Font.Bold = True
+   
+   
+    Set objFSO = CreateObject("Scripting.FileSystemObject")
+    Set ws = Application.ActiveSheet
+     
+     'Get the folder object associated with the directory
+    Set objFolder = objFSO.GetFolder(SourceFolder)
+     
+     'Loop through the Files collection
+     myRow = r
+    For Each objFile In objFolder.Files
+        ws.Cells(myRow + 1, 1).value = objFile.name
+        ws.Cells(myRow + 1, 3).value = objFSO.GetFile(objFile).DateLastAccessed
+        myRow = myRow + 1
+    Next
+     
+     'Clean up!
+    Set objFolder = Nothing
+    Set objFile = Nothing
+    Set objFSO = Nothing
+    If IncludeSubfolders Then
+        For Each SubFolder In SourceFolder.SubFolders
+            ListFolders SubFolder.path, True
+        Next SubFolder
+        Set SubFolder = Nothing
+    End If
+    Columns("A:G").AutoFit
+    Set SourceFolder = Nothing
+    Set fso = Nothing
+    ActiveWorkbook.Saved = True
+     
+End Sub
+
+
