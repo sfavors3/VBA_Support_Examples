@@ -1,0 +1,43 @@
+Option Explicit
+Private Sub TestLinks()
+     
+    Dim oLink  As Hyperlink
+    Dim myRange As String
+     
+    For Each oLink In ActiveSheet.Hyperlinks
+    Debug.Print TestURL(oLink.Address)
+    
+         '// Checks to make sure the URL is not empty and it's not an email address
+        If oLink.Address <> "" And InStr(oLink.Address, "mailto") = 0 Then
+            If Not TestURL(oLink.Address) Then '//calls the TestURL function which test the URL
+                 myRange = oLink.Range.Address
+                Range(myRange).Offset(0, 1).value = "not valid"
+            End If
+        End If
+    Next
+     
+    Set oLink = Nothing
+     
+End Sub
+ 
+Private Function TestURL(strURL As String) As Boolean
+     
+     '// Testing a URL
+    Dim oURL As New WinHttpRequest
+     
+    On Error GoTo TestURL_Err
+    '//specify the target url
+    With oURL
+        .Open "GET", strURL, False
+        .Send '//sends a request to the server and waits for a response, if the resource
+        '// was not received you will get an error and the code will go to the Error Handler
+        TestURL = (.Status = 200)
+    End With
+     
+TestURL_Err:
+     '// If errored then the return Value is the default 0 (False)
+    Set oURL = Nothing
+End Function
+
+
+
